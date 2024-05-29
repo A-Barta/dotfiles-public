@@ -1,0 +1,16 @@
+# Make aliases work with sudo
+alias sudo="sudo "
+
+# Colorize
+alias ls='ls -h --color=auto'
+alias la='ls -alh --color=auto'
+alias diff='diff --color=auto'
+alias grep='grep --color=auto'
+alias pacman='pacman --color auto'
+alias ip='ip -c'
+
+# Prevent accidentally deleting files
+alias rm='rm -i'
+#alias cp='cp -i'
+alias mv='mv -i'
+
