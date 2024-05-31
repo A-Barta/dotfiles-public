@@ -58,3 +58,6 @@ else
 	echo "Nvim not found, not copying config files"
 fi
 
+echo "Copying git configuration"
+cp -a ".gitconfig" "${HOME}/.gitconfig"
+
