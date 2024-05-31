@@ -1,0 +1,7 @@
+[user]
+	email = antonio.bartalesi@gmail.com
+	name = Antonio Bartalesi
+
+[includeIf "hasconfig:remote.*.url:git@gitlab.maxiv.lu.se:*/**"]
+	path = .gitconfig.maxiv
+
