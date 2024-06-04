@@ -45,18 +45,19 @@ precmd_functions+=(check_virtualenv)
 
 # Config dir and repo
 ZSH_CONFDIR="${HOME}/.config/zsh"
-# Try to clone and install from the config repo
-known_hosts_file="${HOME}/.ssh/known_hosts"
-git_host_publickey=$(<"${ZSH_CONFDIR}/host_signature")
-if [ ! -f "${known_hosts_file}" ]; then
-    echo "${git_host_publickey}" > "${known_hosts_file}"
-else
-    # Check if the line exists in the file
-    if ! grep -q "${git_host_publickey}" "${known_hosts_file}"; then
-        echo "${git_host_publickey}" >> "${known_hosts_file}"
-    fi
-fi
 mkdir -p ${ZSH_CONFDIR}
+
+# Try to clone and install from the config repo
+# known_hosts_file="${HOME}/.ssh/known_hosts"
+# git_host_publickey=$(<"${ZSH_CONFDIR}/host_signature")
+# if [ ! -f "${known_hosts_file}" ]; then
+#     echo "${git_host_publickey}" > "${known_hosts_file}"
+# else
+#     # Check if the line exists in the file
+#     if ! grep -q "${git_host_publickey}" "${known_hosts_file}"; then
+#         echo "${git_host_publickey}" >> "${known_hosts_file}"
+#     fi
+# fi
 # git clone "git@bartalesi.eu:~/bartalesi-zsh.git" ${ZSH_CONFDIR} &> /dev/null
 # git -C ${ZSH_CONFDIR} pull origin master &> /dev/null
 # if ! diff "${ZSH_CONFDIR}/zshrc" "${HOME}/.zshrc" > /dev/null; then
