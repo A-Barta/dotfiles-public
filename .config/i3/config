@@ -199,3 +199,7 @@ bindsym $mod+Pause exec i3lock
 bar {
         status_command i3status
 }
+
+# Make popups float again
+for_window [window_role="alert"] floating enable
+
