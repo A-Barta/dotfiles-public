@@ -26,7 +26,7 @@ function check_last_exit_code() {
 
 function check_ssh() {
 	if [[ $SSH_CLIENT ]]; then
-		PROMPT="%B%F{"magenta"}SSH%f%b${PROMPT}";
+		PROMPT="%B%F{"magenta"}SSH %f%b${PROMPT}";
 	fi
 }
 
