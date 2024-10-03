@@ -36,6 +36,17 @@ else
 	echo "I3status not found, not copying config files"
 fi
 
+if command -v sway &> /dev/null
+then
+	echo "Sway is installed, copying config"
+	if [ ! -d "${HOME}/.config/sway" ]; then
+		mkdir -p "${HOME}/.config/sway"
+	fi
+	cp -a ".config/sway/." "${HOME}/.config/sway"
+else
+	echo "I3 not found, not copying config files"
+fi
+
 if command -v alacritty &> /dev/null
 then
 	echo "Alacritty is installed, copying config"
