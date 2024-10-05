@@ -70,6 +70,7 @@ mkdir -p ${ZSH_CONFDIR}
 # History in .local directory:
 HISTSIZE=10000
 SAVEHIST=10000
+setopt SHARE_HISTORY
 HISTDIR="${HOME}/.local/share/zsh/history"
 mkdir -p ${HISTDIR}
 HISTFILE="${HISTDIR}/${HOST}"
