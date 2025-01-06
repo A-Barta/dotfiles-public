@@ -59,7 +59,7 @@ return {
                     lspconfig.clangd.setup {
                         capabilities = capabilities,
                         cmd = {
-                            "/home/antonio/.espressif/tools/esp-clang/16.0.1-fe4f10a809/esp-clang/bin/clangd",
+                            "/home/antonio/.espressif/tools/esp-clang/esp-18.1.2_20240912/esp-clang/bin/clangd",
                             "--all-scopes-completion",
                             "--background-index",
                             "--clang-tidy",
