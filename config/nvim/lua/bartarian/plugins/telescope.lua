@@ -1,7 +1,10 @@
 return {
   'nvim-telescope/telescope.nvim',
   tag = '0.1.6',
-  dependencies = { 'nvim-lua/plenary.nvim' },
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+    'sharkdp/fd',
+  },
   config = function()
     require("telescope").load_extension('harpoon')
   end,

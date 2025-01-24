@@ -1,3 +1,9 @@
+--[[
+Lazy is the chosen package manager.
+
+It is downloaded from git, to avoid relying on whichever os installation
+--]]
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({

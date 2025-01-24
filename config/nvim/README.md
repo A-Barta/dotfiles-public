@@ -15,7 +15,7 @@ The setup uses Folke's lazy.nvim as package manager, and William Boman's mason.n
 
 - `<leader>a` Add file to the harpoon menu`
 - `<C-e>` Toggle harpoon menu
-- `<C-1>` Go to file 1 (also works for 2, 3, 4
+- `<C-1>` Go to file 1 (also works for 2, 3 ... 9, 0)
 
 ### Mason and LSP
 
