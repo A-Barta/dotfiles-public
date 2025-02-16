@@ -1,74 +1,87 @@
 #! /bin/sh
 
-echo "Installing configuration in ${HOME}"
+printf "Installing configuration in ${HOME}\n"
 
 if command -v zsh &> /dev/null
 then
-	echo "ZSH is installed, copying config"
+	printf "\nZSH is installed, copying config\n"
 	cp "zshrc" "${HOME}/.zshrc"
 	if [ ! -d "${HOME}/.config/zsh" ]; then
 		mkdir -p "${HOME}/.config/zsh"
 	fi
 	cp -a "config/zsh/." "${HOME}/.config/zsh"
 else
-	echo "ZSH not found, not copying config files"
+	printf "\nZSH not found, not copying config files\n"
 fi
 
 if command -v i3 &> /dev/null
 then
-	echo "I3 is installed, copying config"
+	printf "\nI3 is installed, copying config\n"
 	if [ ! -d "${HOME}/.config/i3" ]; then
 		mkdir -p "${HOME}/.config/i3"
 	fi
 	cp -a "config/i3/." "${HOME}/.config/i3"
 else
-	echo "I3 not found, not copying config files"
+	printf "\nI3 not found, not copying config files\n"
 fi
 
 if command -v i3status &> /dev/null
 then
-	echo "I3status is installed, copying config"
+	printf "\nI3status is installed, copying config\n"
 	if [ ! -d "${HOME}/.config/i3status" ]; then
 		mkdir -p "${HOME}/.config/i3status"
 	fi
 	cp -a "config/i3status/." "${HOME}/.config/i3status"
 else
-	echo "I3status not found, not copying config files"
+	printf "\nI3status not found, not copying config files\n"
 fi
 
 if command -v sway &> /dev/null
 then
-	echo "Sway is installed, copying config"
+	printf "\nSway is installed, copying config\n"
 	if [ ! -d "${HOME}/.config/sway" ]; then
 		mkdir -p "${HOME}/.config/sway"
 	fi
 	cp -a "config/sway/." "${HOME}/.config/sway"
 else
-	echo "I3 not found, not copying config files"
+	printf "\nI3 not found, not copying config files\n"
 fi
 
 if command -v alacritty &> /dev/null
 then
-	echo "Alacritty is installed, copying config"
+	printf "\nAlacritty is installed, copying config\n"
 	if [ ! -d "${HOME}/.config/alacritty" ]; then
 		mkdir -p "${HOME}/.config/alacritty"
 	fi
 	cp -a "config/alacritty/." "${HOME}/.config/alacritty"
 else
-	echo "Alacritty not found, not copying config files"
+	printf "\nAlacritty not found, not copying config files\n"
 fi
 
 if command -v nvim &> /dev/null
 then
-	echo "Neovim is installed, copying config"
+	printf "\nNeovim is installed, copying config\n"
 	if [ ! -d "${HOME}/.config/nvim" ]; then
 		mkdir -p "${HOME}/.config/nvim"
 	fi
 	cp -a "config/nvim/." "${HOME}/.config/nvim"
 else
-	echo "Nvim not found, not copying config files"
+	printf "\nNvim not found, not copying config files\n"
 fi
 
-echo "Copying git configuration"
-cp -a "gitconfig" "${HOME}/.gitconfig"
+printf "\nCopying git configuration\n"
+
+read -p "Enter user name for git config: " _username
+read -p "Enter user email for git config: " _useremail
+
+_tempfile=$(mktemp)
+
+cat "gitconfig" > "${_tempfile}"
+
+sed -i "s/<user>/${_username}/g" "${_tempfile}"
+sed -i "s/<email>/${_useremail}/g" "${_tempfile}"
+
+rm ${_tempfile}
+
+cp -a "${_tempfile}" "${HOME}/.gitconfig"
 
