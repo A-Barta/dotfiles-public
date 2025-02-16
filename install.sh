@@ -69,10 +69,10 @@ else
 	printf "\nNvim not found, not copying config files\n"
 fi
 
-printf "\nCopying git configuration\n"
+printf "\nConfiguring git\n\n- Commit author\n"
 
-read -p "Enter user name for git config: " _username
-read -p "Enter user email for git config: " _useremail
+read -p "Enter user name: " _username
+read -p "Enter user email: " _useremail
 
 _tempfile=$(mktemp)
 
@@ -81,7 +81,9 @@ cat "gitconfig" > "${_tempfile}"
 sed -i "s/<user>/${_username}/g" "${_tempfile}"
 sed -i "s/<email>/${_useremail}/g" "${_tempfile}"
 
-rm ${_tempfile}
-
 cp -a "${_tempfile}" "${HOME}/.gitconfig"
+
+chmod 644 "${HOME}/.gitconfig"
+
+rm ${_tempfile}
 
