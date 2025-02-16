@@ -1,21 +1,27 @@
 return {
   "theprimeagen/harpoon",
+  branch = "harpoon2",
+  requires = { {"nvim-lua/plenary.nvim"} },
   config = function()
-    require("harpoon.mark")
-    require("harpoon.ui")
+    local harpoon = require("harpoon")
+    harpoon:setup()
+
+    vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+    vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+    vim.keymap.set("n", "<C-1>", function() harpoon:list():select(1) end)
+    vim.keymap.set("n", "<C-2>", function() harpoon:list():select(2) end)
+    vim.keymap.set("n", "<C-3>", function() harpoon:list():select(3) end)
+    vim.keymap.set("n", "<C-4>", function() harpoon:list():select(4) end)
+    vim.keymap.set("n", "<C-5>", function() harpoon:list():select(5) end)
+    vim.keymap.set("n", "<C-6>", function() harpoon:list():select(6) end)
+    vim.keymap.set("n", "<C-7>", function() harpoon:list():select(7) end)
+    vim.keymap.set("n", "<C-8>", function() harpoon:list():select(8) end)
+    vim.keymap.set("n", "<C-9>", function() harpoon:list():select(9) end)
+    vim.keymap.set("n", "<C-0>", function() harpoon:list():select(10) end)
+
+    -- Toggle previous & next buffers stored within Harpoon list
+    vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
+    vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
   end,
-  keys = {
-    {'<leader>a', mode = 'n', '<cmd>lua require("harpoon.mark").add_file()<cr>', desc = 'Harpoon - mark a file'},
-    {'<C-e>', mode = 'n', '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>', desc = 'Harpoon - quick menu'},
-    {'<C-1>', mode = 'n', '<cmd>lua require("harpoon.ui").nav_file(1)<cr>', desc = 'Harpoon - goto file 1'},
-    {'<C-2>', mode = 'n', '<cmd>lua require("harpoon.ui").nav_file(2)<cr>', desc = 'Harpoon - goto file 2'},
-    {'<C-3>', mode = 'n', '<cmd>lua require("harpoon.ui").nav_file(3)<cr>', desc = 'Harpoon - goto file 3'},
-    {'<C-4>', mode = 'n', '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', desc = 'Harpoon - goto file 4'},
-    {'<C-5>', mode = 'n', '<cmd>lua require("harpoon.ui").nav_file(5)<cr>', desc = 'Harpoon - goto file 5'},
-    {'<C-6>', mode = 'n', '<cmd>lua require("harpoon.ui").nav_file(6)<cr>', desc = 'Harpoon - goto file 6'},
-    {'<C-7>', mode = 'n', '<cmd>lua require("harpoon.ui").nav_file(7)<cr>', desc = 'Harpoon - goto file 7'},
-    {'<C-8>', mode = 'n', '<cmd>lua require("harpoon.ui").nav_file(8)<cr>', desc = 'Harpoon - goto file 8'},
-    {'<C-9>', mode = 'n', '<cmd>lua require("harpoon.ui").nav_file(9)<cr>', desc = 'Harpoon - goto file 9'},
-    {'<C-0>', mode = 'n', '<cmd>lua require("harpoon.ui").nav_file(10)<cr>', desc = 'Harpoon - goto file 10'},
-  }
 }
