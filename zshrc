@@ -36,12 +36,19 @@ function check_virtualenv() {
 	fi
 }
 
+function check_condaenv() {
+	if [[ $CONDA_PROMPT_MODIFIER ]]; then
+		PROMPT="%B%F{"blue"}${CONDA_PROMPT_MODIFIER}%f%b${PROMPT}";
+	fi
+}
+
 typeset -a precmd_functions
 # append the function to our array of precmd functions
 precmd_functions+=(make_prompt)
 precmd_functions+=(check_last_exit_code)
 precmd_functions+=(check_ssh)
 precmd_functions+=(check_virtualenv)
+precmd_functions+=(check_condaenv)
 
 # Config dir and repo
 ZSH_CONFDIR="${HOME}/.config/zsh"
@@ -145,6 +152,6 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 # Python virtualenvwrapper
 if [ -f /usr/bin/virtualenvwrapper_lazy.sh ]; then
-	export WORKON_HOME=~/Documents/venvs
-	source /usr/bin/virtualenvwrapper_lazy.sh
+  export WORKON_HOME=~/Documents/venvs
+  source /usr/bin/virtualenvwrapper_lazy.sh
 fi
