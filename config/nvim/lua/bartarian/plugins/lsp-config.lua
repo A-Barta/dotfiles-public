@@ -27,7 +27,7 @@ return {
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
-                "pyright",
+                "ruff",
                 "clangd",
             },
             handlers = {
@@ -65,15 +65,12 @@ return {
                             "--compile_args_from=filesystem", -- lsp-> does not come from compie_commands.json
                             "--completion-parse=always",
                             "--completion-style=bundled",
-                            "--cross-file-rename",
                             "--debug-origin",
                             "--enable-config", -- clangd 11+ supports reading from .clangd configuration file
-                            "--fallback-style=Qt",
-                            "--folding-ranges",
+                            "--fallback-style=LLVM",
                             "--function-arg-placeholders",
                             "--header-insertion=iwyu",
                             "--pch-storage=memory", -- could also be disk
-                            "--suggest-missing-includes",
                             "-j=4", -- number of workers
                             "--log=error",
                         },
