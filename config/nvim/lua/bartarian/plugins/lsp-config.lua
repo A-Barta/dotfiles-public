@@ -52,6 +52,17 @@ return {
                         }
                     }
                 end,
+		["ruff"] = function()
+		    local lspconfig = require("lspconfig")
+		    lspconfig.ruff.setup {
+		        capabilities = capabilities,
+			init_options = {
+                            settings = {
+                                args = {}, -- You can add "--config", "path/to/ruff.toml" if needed
+                            },
+                        },
+		    }
+		end,
                 ["clangd"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.clangd.setup {
