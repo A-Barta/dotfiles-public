@@ -92,6 +92,10 @@ if [ -f "${ZSH_CONFDIR}/aliasrc_maxiv" ]; then
 	source "${ZSH_CONFDIR}/aliasrc_maxiv"
 fi
 
+if [ -f "${ZSH_CONFDIR}/aliasrc_private" ]; then
+	source "${ZSH_CONFDIR}/aliasrc_private"
+fi
+
 # Basic auto/tab complete:
 autoload -U compinit
 zstyle ':completion:*' menu select
