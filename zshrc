@@ -159,3 +159,6 @@ if [ -f /usr/bin/virtualenvwrapper_lazy.sh ]; then
   export WORKON_HOME=~/Documents/venvs
   source /usr/bin/virtualenvwrapper_lazy.sh
 fi
+
+# Add local bin to path
+export PATH="${HOME}/.local/bin:${PATH}"
