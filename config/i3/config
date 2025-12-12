@@ -21,15 +21,15 @@ font pango:FreeMono 12
 font pango:DejaVu Sans Mono, Regular 12
 font pango:DejaVuSansM Nerd Font, Regular 12
 
+# Screen layout according to local config
+exec_always --no-startup-id ~/.screenlayout/xrandr.sh
+
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
-
-# Screen layout according to local config
-exec_always --no-startup-id ~/.screenlayout/xrandr.sh
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
@@ -41,10 +41,10 @@ exec --no-startup-id nm-applet
 
 exec --no-startup-id compton
 
-exec_always  --no-startup-id feh Pictures/wave.png --bg-center
+exec_always --no-startup-id feh Pictures/wave.png --bg-center
 
 # Grimshot is used for screenshots
-bindsym Print exec grimshot save area
+bindsym Print exec --no-startup-id import "$(home)/Pictures/screen$(date'+%F_%H:%M:%S').png" && xclip -se c -t image/png -i "$(home)/Pictures/screen$(date'+%F_%H:%M:%S').png""
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
