@@ -17,11 +17,16 @@ function make_prompt() {
 	PROMPT="%B[%F{${USER_COLOR}}%n%f@%F{"green"}%M%f:%F{"cyan"}%~%f]%b "
 }
 
+# Capture the command's exit code first, before any other precmd function
+# runs and clobbers $? with its own return status.
+function save_exit_code() {
+	LAST_EXIT_CODE=$?
+}
+
 function check_last_exit_code() {
-	local LAST_EXIT_CODE=$?
-		if [[ $LAST_EXIT_CODE -ne 0 ]]; then
-			PROMPT="%K{red}${LAST_EXIT_CODE}%k ${PROMPT}";
-		fi
+	if [[ $LAST_EXIT_CODE -ne 0 ]]; then
+		PROMPT="%K{red}${LAST_EXIT_CODE}%k ${PROMPT}";
+	fi
 }
 
 function check_ssh() {
@@ -44,6 +49,9 @@ function check_condaenv() {
 
 typeset -a precmd_functions
 # append the function to our array of precmd functions
+# save_exit_code must run first; check_last_exit_code must run after
+# make_prompt, which rebuilds PROMPT from scratch.
+precmd_functions+=(save_exit_code)
 precmd_functions+=(make_prompt)
 precmd_functions+=(check_last_exit_code)
 precmd_functions+=(check_ssh)
