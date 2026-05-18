@@ -69,6 +69,17 @@ else
 	printf "\nFuzzel not found, not copying config files\n"
 fi
 
+if command -v mako &> /dev/null
+then
+	printf "\nMako is installed, copying config\n"
+	if [ ! -d "${HOME}/.config/mako" ]; then
+		mkdir -p "${HOME}/.config/mako"
+	fi
+	cp -a "config/mako/." "${HOME}/.config/mako"
+else
+	printf "\nMako not found, not copying config files\n"
+fi
+
 if command -v alacritty &> /dev/null
 then
 	printf "\nAlacritty is installed, copying config\n"
