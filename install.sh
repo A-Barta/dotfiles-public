@@ -102,21 +102,37 @@ else
 	printf "\nNvim not found, not copying config files\n"
 fi
 
-printf "\nConfiguring git\n\n- Commit author\n"
+printf "\nConfiguring git\n"
 
-read -p "Enter user name: " _username
-read -p "Enter user email: " _useremail
+if command -v git &> /dev/null
+then
+	_current_name="$(git config --global user.name)"
+	_current_email="$(git config --global user.email)"
 
-_tempfile=$(mktemp)
+	printf "\nCurrent git commit author:\n"
+	printf "  name:  %s\n" "${_current_name:-<unset>}"
+	printf "  email: %s\n" "${_current_email:-<unset>}"
 
-cat "gitconfig" > "${_tempfile}"
+	read -p "Update the git commit author? [y/N] " _answer
+	case "${_answer}" in
+		[Yy]*)
+			read -p "Enter user name: " _username
+			read -p "Enter user email: " _useremail
 
-sed -i "s/<user>/${_username}/g" "${_tempfile}"
-sed -i "s/<email>/${_useremail}/g" "${_tempfile}"
-
-cp -a "${_tempfile}" "${HOME}/.gitconfig"
-
-chmod 644 "${HOME}/.gitconfig"
-
-rm ${_tempfile}
+			_tempfile=$(mktemp)
+			cat "gitconfig" > "${_tempfile}"
+			sed -i "s/<user>/${_username}/g" "${_tempfile}"
+			sed -i "s/<email>/${_useremail}/g" "${_tempfile}"
+			cp -a "${_tempfile}" "${HOME}/.gitconfig"
+			chmod 644 "${HOME}/.gitconfig"
+			rm "${_tempfile}"
+			printf "Git commit author updated.\n"
+			;;
+		*)
+			printf "Keeping the existing git configuration.\n"
+			;;
+	esac
+else
+	printf "\nGit not found, skipping git configuration\n"
+fi
 
