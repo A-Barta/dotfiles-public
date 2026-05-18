@@ -1,123 +1,105 @@
 #!/bin/bash
 
-printf "Installing configuration in ${HOME}\n"
+# install.sh — deploy these dotfiles into $HOME.
+# Each tool's config is copied only if that tool is installed.
 
-if command -v zsh &> /dev/null
-then
-	printf "\nZSH is installed, copying config\n"
-	cp "zshrc" "${HOME}/.zshrc"
-	if [ ! -d "${HOME}/.config/zsh" ]; then
-		mkdir -p "${HOME}/.config/zsh"
+# Copy a config tree into place if its command is available.
+#   install_config <command> <source-dir> <destination-dir>
+install_config() {
+	local cmd="$1" src="$2" dest="$3"
+	if command -v "${cmd}" &> /dev/null
+	then
+		mkdir -p "${dest}"
+		cp -a "${src}/." "${dest}"
+		printf "  ✓ %s\n" "${cmd}"
+	else
+		printf "  ✗ %s (not installed, skipped)\n" "${cmd}"
 	fi
-	cp -a "config/zsh/." "${HOME}/.config/zsh"
+}
+
+printf "Installing dotfiles into %s\n" "${HOME}"
+
+# --- Dependencies --------------------------------------------------------
+# These configs invoke extra commands at runtime. Everything is installed
+# regardless; this only reports what is missing.
+printf "\nDependencies\n"
+
+declare -A _deps=(
+	[zsh]=zsh
+	[i3]=i3-wm
+	[i3status]=i3status
+	[sway]=sway
+	[waybar]=waybar
+	[fuzzel]=fuzzel
+	[mako]=mako
+	[alacritty]=alacritty
+	[nvim]=neovim
+	[git]=git
+	[dex]=dex
+	[wpctl]=wireplumber
+	[brightnessctl]=brightnessctl
+	[grim]=grim
+	[slurp]=slurp
+	[swaylock]=swaylock
+	[pavucontrol]=pavucontrol
+	[lf]=lf
+	[feh]=feh
+	[picom]=picom
+	[i3lock]=i3lock
+	[nm-applet]=network-manager-applet
+)
+
+_missing_pkgs=""
+for _cmd in $(printf '%s\n' "${!_deps[@]}" | sort)
+do
+	if ! command -v "${_cmd}" &> /dev/null
+	then
+		printf "  ✗ %-14s (package: %s)\n" "${_cmd}" "${_deps[$_cmd]}"
+		_missing_pkgs="${_missing_pkgs} ${_deps[$_cmd]}"
+	fi
+done
+
+if [ -n "${_missing_pkgs}" ]
+then
+	printf "  install the missing commands with:\n"
+	printf "    sudo pacman -S%s\n" "${_missing_pkgs}"
 else
-	printf "\nZSH not found, not copying config files\n"
+	printf "  ✓ all expected commands are available\n"
 fi
 
-if command -v i3 &> /dev/null
-then
-	printf "\nI3 is installed, copying config\n"
-	if [ ! -d "${HOME}/.config/i3" ]; then
-		mkdir -p "${HOME}/.config/i3"
-	fi
-	cp -a "config/i3/." "${HOME}/.config/i3"
-else
-	printf "\nI3 not found, not copying config files\n"
-fi
+# --- Configs -------------------------------------------------------------
+printf "\nConfigs\n"
 
-if command -v i3status &> /dev/null
-then
-	printf "\nI3status is installed, copying config\n"
-	if [ ! -d "${HOME}/.config/i3status" ]; then
-		mkdir -p "${HOME}/.config/i3status"
-	fi
-	cp -a "config/i3status/." "${HOME}/.config/i3status"
-else
-	printf "\nI3status not found, not copying config files\n"
-fi
+# zsh also gets ~/.zshrc, on top of ~/.config/zsh.
+command -v zsh &> /dev/null && cp "zshrc" "${HOME}/.zshrc"
 
-if command -v sway &> /dev/null
-then
-	printf "\nSway is installed, copying config\n"
-	if [ ! -d "${HOME}/.config/sway" ]; then
-		mkdir -p "${HOME}/.config/sway"
-	fi
-	cp -a "config/sway/." "${HOME}/.config/sway"
-else
-	printf "\nSway not found, not copying config files\n"
-fi
+install_config zsh       config/zsh       "${HOME}/.config/zsh"
+install_config i3        config/i3        "${HOME}/.config/i3"
+install_config i3status  config/i3status  "${HOME}/.config/i3status"
+install_config sway      config/sway      "${HOME}/.config/sway"
+install_config waybar    config/waybar    "${HOME}/.config/waybar"
+install_config fuzzel    config/fuzzel    "${HOME}/.config/fuzzel"
+install_config mako      config/mako      "${HOME}/.config/mako"
+install_config alacritty config/alacritty "${HOME}/.config/alacritty"
+install_config nvim      config/nvim      "${HOME}/.config/nvim"
 
-if command -v waybar &> /dev/null
-then
-	printf "\nWaybar is installed, copying config\n"
-	if [ ! -d "${HOME}/.config/waybar" ]; then
-		mkdir -p "${HOME}/.config/waybar"
-	fi
-	cp -a "config/waybar/." "${HOME}/.config/waybar"
-else
-	printf "\nWaybar not found, not copying config files\n"
-fi
-
-if command -v fuzzel &> /dev/null
-then
-	printf "\nFuzzel is installed, copying config\n"
-	if [ ! -d "${HOME}/.config/fuzzel" ]; then
-		mkdir -p "${HOME}/.config/fuzzel"
-	fi
-	cp -a "config/fuzzel/." "${HOME}/.config/fuzzel"
-else
-	printf "\nFuzzel not found, not copying config files\n"
-fi
-
-if command -v mako &> /dev/null
-then
-	printf "\nMako is installed, copying config\n"
-	if [ ! -d "${HOME}/.config/mako" ]; then
-		mkdir -p "${HOME}/.config/mako"
-	fi
-	cp -a "config/mako/." "${HOME}/.config/mako"
-else
-	printf "\nMako not found, not copying config files\n"
-fi
-
-if command -v alacritty &> /dev/null
-then
-	printf "\nAlacritty is installed, copying config\n"
-	if [ ! -d "${HOME}/.config/alacritty" ]; then
-		mkdir -p "${HOME}/.config/alacritty"
-	fi
-	cp -a "config/alacritty/." "${HOME}/.config/alacritty"
-else
-	printf "\nAlacritty not found, not copying config files\n"
-fi
-
-if command -v nvim &> /dev/null
-then
-	printf "\nNeovim is installed, copying config\n"
-	if [ ! -d "${HOME}/.config/nvim" ]; then
-		mkdir -p "${HOME}/.config/nvim"
-	fi
-	cp -a "config/nvim/." "${HOME}/.config/nvim"
-else
-	printf "\nNvim not found, not copying config files\n"
-fi
-
-printf "\nConfiguring git\n"
+# --- Git -----------------------------------------------------------------
+printf "\nGit\n"
 
 if command -v git &> /dev/null
 then
 	_current_name="$(git config --global user.name)"
 	_current_email="$(git config --global user.email)"
 
-	printf "\nCurrent git commit author:\n"
-	printf "  name:  %s\n" "${_current_name:-<unset>}"
-	printf "  email: %s\n" "${_current_email:-<unset>}"
+	printf "  current commit author:\n"
+	printf "    name:  %s\n" "${_current_name:-<unset>}"
+	printf "    email: %s\n" "${_current_email:-<unset>}"
 
-	read -p "Update the git commit author? [y/N] " _answer
+	read -p "  update the git commit author? [y/N] " _answer
 	case "${_answer}" in
 		[Yy]*)
-			read -p "Enter user name: " _username
-			read -p "Enter user email: " _useremail
+			read -p "    user name:  " _username
+			read -p "    user email: " _useremail
 
 			_tempfile=$(mktemp)
 			cat "gitconfig" > "${_tempfile}"
@@ -126,13 +108,14 @@ then
 			cp -a "${_tempfile}" "${HOME}/.gitconfig"
 			chmod 644 "${HOME}/.gitconfig"
 			rm "${_tempfile}"
-			printf "Git commit author updated.\n"
+			printf "  ✓ git commit author updated\n"
 			;;
 		*)
-			printf "Keeping the existing git configuration.\n"
+			printf "  ✓ kept the existing git configuration\n"
 			;;
 	esac
 else
-	printf "\nGit not found, skipping git configuration\n"
+	printf "  ✗ git not installed, skipped\n"
 fi
 
+printf "\nDone.\n"
