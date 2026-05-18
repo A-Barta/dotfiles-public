@@ -19,6 +19,16 @@ exec --no-startup-id dex --autostart --environment sway
 # Notification daemon (configured in ~/.config/mako/config)
 exec --no-startup-id mako
 
+# Clipboard history: cliphist watches the Wayland clipboard and records every
+# copy. Text and images need separate watchers. Browse past entries with the
+# $mod+Shift+v binding below.
+exec wl-paste --type text --watch cliphist store
+exec wl-paste --type image --watch cliphist store
+
+# Keep clipboard contents alive after the source window closes — Wayland drops
+# them otherwise.
+exec wl-clip-persist --clipboard regular
+
 # export variables for screen sharing
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
@@ -76,6 +86,9 @@ bindsym $mod+Shift+q kill
 
 # start fuzzel (a program launcher)
 bindsym $mod+d exec --no-startup-id fuzzel
+
+# clipboard history: pick a past entry with fuzzel and copy it back
+bindsym $mod+Shift+v exec cliphist list | fuzzel --dmenu | cliphist decode | wl-copy
 
 # dismiss the latest / all notifications
 bindsym $mod+n exec --no-startup-id makoctl dismiss
