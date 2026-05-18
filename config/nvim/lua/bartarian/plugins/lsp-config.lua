@@ -90,6 +90,35 @@ return {
             }
         })
 
+        -- Buffer-local LSP keymaps, set only once a server attaches to a buffer
+        vim.api.nvim_create_autocmd("LspAttach", {
+            group = vim.api.nvim_create_augroup("bartarian_lsp_attach", { clear = true }),
+            callback = function(event)
+                local function map(keys, fn, desc)
+                    vim.keymap.set("n", keys, fn, { buffer = event.buf, desc = "LSP: " .. desc })
+                end
+
+                -- Navigation (Telescope-backed where it gives a picker)
+                map("gd", "<cmd>Telescope lsp_definitions<cr>", "Go to definition")
+                map("gr", "<cmd>Telescope lsp_references<cr>", "Go to references")
+                map("gi", "<cmd>Telescope lsp_implementations<cr>", "Go to implementation")
+                map("gD", vim.lsp.buf.declaration, "Go to declaration")
+
+                -- Information
+                map("K", vim.lsp.buf.hover, "Hover documentation")
+
+                -- Actions
+                map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+                map("<leader>ca", vim.lsp.buf.code_action, "Code action")
+                map("<leader>cf", function() vim.lsp.buf.format({ async = true }) end, "Format buffer")
+
+                -- Diagnostics
+                map("[d", function() vim.diagnostic.jump({ count = -1 }) end, "Previous diagnostic")
+                map("]d", function() vim.diagnostic.jump({ count = 1 }) end, "Next diagnostic")
+                map("<leader>vd", vim.diagnostic.open_float, "Show diagnostic float")
+            end,
+        })
+
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
         cmp.setup({
