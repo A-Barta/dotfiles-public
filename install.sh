@@ -44,7 +44,7 @@ then
 	fi
 	cp -a "config/sway/." "${HOME}/.config/sway"
 else
-	printf "\nI3 not found, not copying config files\n"
+	printf "\nSway not found, not copying config files\n"
 fi
 
 if command -v alacritty &> /dev/null
