@@ -30,7 +30,16 @@ exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DE
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 # exec --no-startup-id nm-applet
 
-output eDP-1 mode 1920x1080 pos 0 0 bg ~/background.png stretch
+# Wallpaper for every output; monitor geometry is set per-machine below.
+output * bg ~/background.png stretch
+
+# Display layout (mode/position) is machine-specific. Each machine has its
+# own file named after its hostname (e.g. cthulhu.conf), deployed into
+# ~/.config/sway/outputs.d/ from the dotfiles-private repo. sway runs include
+# paths through wordexp, so $(hostname) is substituted at load time. A host
+# with no matching file just logs a harmless warning and falls back to sway's
+# output autodetection.
+include ~/.config/sway/outputs.d/$(hostname).conf
 
 # Use pactl to adjust volume in Wireplumber.
 set $refresh_i3status killall -SIGUSR1 i3status
