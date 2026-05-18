@@ -1,0 +1,78 @@
+/* Kanagawa Wave theme for Waybar.
+ * Palette mirrors config/alacritty/themes/kanagawa-wave.toml. */
+
+* {
+    font-family: "Hack Nerd Font", "DejaVu Sans Mono", monospace;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: #1f1f28;
+    color: #dcd7ba;
+}
+
+tooltip {
+    background-color: #16161d;
+    border: 1px solid #7e9cd8;
+}
+
+/* Workspaces */
+#workspaces button {
+    padding: 0 8px;
+    color: #727169;
+    background-color: transparent;
+    border-bottom: 2px solid transparent;
+}
+
+#workspaces button.focused {
+    color: #dcd7ba;
+    border-bottom: 2px solid #7e9cd8;
+}
+
+#workspaces button.urgent {
+    color: #1f1f28;
+    background-color: #e82424;
+}
+
+#workspaces button:hover {
+    background-color: #2a2a37;
+    color: #dcd7ba;
+}
+
+#mode {
+    color: #ffa066;
+    padding: 0 10px;
+}
+
+#window {
+    color: #c8c093;
+}
+
+/* Right-side module pills */
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#battery,
+#tray,
+#clock {
+    padding: 0 10px;
+    margin: 4px 2px;
+    border-radius: 6px;
+    background-color: #2a2a37;
+}
+
+#clock      { color: #7fb4ca; }
+#cpu        { color: #98bb6c; }
+#memory     { color: #7aa89f; }
+#network    { color: #7e9cd8; }
+#pulseaudio { color: #e6c384; }
+#battery    { color: #98bb6c; }
+
+#battery.warning  { color: #ffa066; }
+#battery.critical { color: #e82424; }
+#battery.charging { color: #98bb6c; }
+
+#pulseaudio.muted     { color: #727169; }
+#network.disconnected { color: #c34043; }

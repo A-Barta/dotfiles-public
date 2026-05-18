@@ -71,8 +71,8 @@ bindsym $mod+Return exec alacritty
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu-wayland (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu-wl_run
+# start fuzzel (a program launcher)
+bindsym $mod+d exec --no-startup-id fuzzel
 
 # change focus
 bindsym $mod+h focus left
@@ -193,10 +193,10 @@ bindsym $mod+Shift+p exec swaylock -c 1a1a1a
 
 bindsym $mod+Shift+Delete exec "systemctl poweroff"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# Status bar: Waybar (configured in ~/.config/waybar/). sway manages its
+# lifecycle via swaybar_command, so it restarts on reload.
 bar {
-        status_command i3status
+        swaybar_command waybar
 }
 
 # Make popups float again

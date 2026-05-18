@@ -47,6 +47,28 @@ else
 	printf "\nSway not found, not copying config files\n"
 fi
 
+if command -v waybar &> /dev/null
+then
+	printf "\nWaybar is installed, copying config\n"
+	if [ ! -d "${HOME}/.config/waybar" ]; then
+		mkdir -p "${HOME}/.config/waybar"
+	fi
+	cp -a "config/waybar/." "${HOME}/.config/waybar"
+else
+	printf "\nWaybar not found, not copying config files\n"
+fi
+
+if command -v fuzzel &> /dev/null
+then
+	printf "\nFuzzel is installed, copying config\n"
+	if [ ! -d "${HOME}/.config/fuzzel" ]; then
+		mkdir -p "${HOME}/.config/fuzzel"
+	fi
+	cp -a "config/fuzzel/." "${HOME}/.config/fuzzel"
+else
+	printf "\nFuzzel not found, not copying config files\n"
+fi
+
 if command -v alacritty &> /dev/null
 then
 	printf "\nAlacritty is installed, copying config\n"
