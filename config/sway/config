@@ -41,12 +41,12 @@ output * bg ~/background.png stretch
 # output autodetection.
 include ~/.config/sway/outputs.d/$(hostname).conf
 
-# Use pactl to adjust volume in Wireplumber.
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+ && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%- && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle && $refresh_i3status
+# Use wpctl to adjust volume in Wireplumber. Waybar tracks the volume on its
+# own, so no bar refresh is needed. -l 1.0 caps the volume at 100%.
+bindsym XF86AudioRaiseVolume exec --no-startup-id wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 10%+
+bindsym XF86AudioLowerVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-
+bindsym XF86AudioMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86AudioMicMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 
 # Screen brightness keys
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
