@@ -11,7 +11,7 @@ padding.y = 6
 
 opacity = 0.98
 
-decorations = "Buttonless"
+decorations = "None"
 
 [font]
 normal.family = "Hack nerd font mono"

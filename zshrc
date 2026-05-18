@@ -91,7 +91,7 @@ mkdir -p ${HISTDIR}
 HISTFILE="${HISTDIR}/${HOST}"
 
 # Load aliases and shortcuts if existent.
-[ -f "/usr/bin/nvim" ] && alias vim=nvim && alias vi=nvim && export VISUAL=nvim
+command -v nvim &> /dev/null && alias vim=nvim && alias vi=nvim && export VISUAL=nvim
 if [ -f "${ZSH_CONFDIR}/aliasrc" ]; then
 	source "${ZSH_CONFDIR}/aliasrc"
 fi
@@ -163,10 +163,12 @@ bindkey '^e' edit-command-line
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 
 # Python virtualenvwrapper
-if [ -f /usr/bin/virtualenvwrapper_lazy.sh ]; then
+_virtualenvwrapper="$(command -v virtualenvwrapper_lazy.sh)"
+if [ -n "${_virtualenvwrapper}" ]; then
   export WORKON_HOME=~/Documents/venvs
-  source /usr/bin/virtualenvwrapper_lazy.sh
+  source "${_virtualenvwrapper}"
 fi
+unset _virtualenvwrapper
 
 # Add local bin to path
 export PATH="${HOME}/.local/bin:${PATH}"

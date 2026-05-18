@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 printf "Installing configuration in ${HOME}\n"
 

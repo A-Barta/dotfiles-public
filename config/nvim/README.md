@@ -24,7 +24,11 @@ The setup uses Folke's lazy.nvim as package manager, and William Boman's mason.n
 - `<C-y>` apply selected item
 - `<C-space>` complete
 
-### Tree
+### Tree (disabled)
+
+The nvim-tree plugin is currently disabled (`enabled = false` in
+`plugins/nvim-tree.lua`); netrw is used instead (see `<leader>pv`). These
+bindings only apply if the plugin is re-enabled.
 
 - `<leader>ee` toggle nvim tree
 - `<leader>ef` toggle nvim tree find file
