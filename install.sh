@@ -1,20 +1,35 @@
 #!/bin/bash
 
 # install.sh — deploy these dotfiles into $HOME.
-# Each tool's config is copied only if that tool is installed.
+# Each tool's config is linked only if that tool is installed.
 
-# Copy a config tree into place if its command is available.
-#   install_config <command> <source-dir> <destination-dir>
+# Deployed configs are symlinks into this repo, so moving the repo breaks them.
+_repo="$(cd "$(dirname "$0")" && pwd)"
+
+#   link_into_home <source-path> <destination-path>
+link_into_home() {
+	local src="$1" dest="$2"
+
+	if [ -e "${dest}" ] && [ ! -L "${dest}" ]
+	then
+		printf "  ! %s exists and is not a symlink; remove it and re-run\n" "${dest}"
+		return 1
+	fi
+
+	mkdir -p "$(dirname "${dest}")"
+	ln -sfn "${_repo}/${src}" "${dest}"
+}
+
+#   install_config <command> <source-path> <destination-path>
 install_config() {
 	local cmd="$1" src="$2" dest="$3"
-	if command -v "${cmd}" &> /dev/null
+	if ! command -v "${cmd}" &> /dev/null
 	then
-		mkdir -p "${dest}"
-		cp -a "${src}/." "${dest}"
-		printf "  ✓ %s\n" "${cmd}"
-	else
 		printf "  ✗ %s (not installed, skipped)\n" "${cmd}"
+		return
 	fi
+
+	link_into_home "${src}" "${dest}" && printf "  ✓ %s\n" "${cmd}"
 }
 
 printf "Installing dotfiles into %s\n" "${HOME}"
@@ -74,12 +89,15 @@ fi
 printf "\nConfigs\n"
 
 # zsh also gets ~/.zshrc, on top of ~/.config/zsh.
-command -v zsh &> /dev/null && cp "zshrc" "${HOME}/.zshrc"
+command -v zsh &> /dev/null && link_into_home "zshrc" "${HOME}/.zshrc"
 
-install_config zsh       config/zsh       "${HOME}/.config/zsh"
+# These dirs also hold machine-local files (aliasrc_private, outputs.d/),
+# so only the repo-owned file is linked, not the directory.
+install_config zsh       config/zsh/aliasrc "${HOME}/.config/zsh/aliasrc"
+install_config sway      config/sway/config "${HOME}/.config/sway/config"
+
 install_config i3        config/i3        "${HOME}/.config/i3"
 install_config i3status  config/i3status  "${HOME}/.config/i3status"
-install_config sway      config/sway      "${HOME}/.config/sway"
 install_config waybar    config/waybar    "${HOME}/.config/waybar"
 install_config fuzzel    config/fuzzel    "${HOME}/.config/fuzzel"
 install_config mako      config/mako      "${HOME}/.config/mako"
