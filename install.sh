@@ -35,54 +35,190 @@ install_config() {
 printf "Installing dotfiles into %s\n" "${HOME}"
 
 # --- Dependencies --------------------------------------------------------
-# These configs invoke extra commands at runtime. Everything is installed
-# regardless; this only reports what is missing.
+# Nothing is installed here; missing commands are only reported.
+# A package name of "-" means the command has no package on that distribution.
 printf "\nDependencies\n"
 
-declare -A _deps=(
-	[zsh]=zsh
-	[i3]=i3-wm
-	[i3status]=i3status
-	[sway]=sway
-	[waybar]=waybar
-	[fuzzel]=fuzzel
-	[mako]=mako
-	[cliphist]=cliphist
-	[wl-copy]=wl-clipboard
-	[wl-clip-persist]=wl-clip-persist
-	[alacritty]=alacritty
-	[nvim]=neovim
-	[git]=git
-	[dex]=dex
-	[wpctl]=wireplumber
-	[brightnessctl]=brightnessctl
-	[grim]=grim
-	[slurp]=slurp
-	[swaylock]=swaylock
-	[pavucontrol]=pavucontrol
-	[lf]=lf
-	[feh]=feh
-	[picom]=picom
-	[i3lock]=i3lock
-	[nm-applet]=network-manager-applet
+# ID_LIKE resolves derivatives to their parent: manjaro -> arch, alma -> rhel.
+detect_os() {
+	local _id _id_like
+	if [ -r /etc/os-release ]
+	then
+		# Subshell keeps os-release's variables out of this script's scope.
+		_id="$(. /etc/os-release && printf '%s' "${ID:-}")"
+		_id_like="$(. /etc/os-release && printf '%s' "${ID_LIKE:-}")"
+	fi
+
+	case " ${_id} ${_id_like} " in
+		*" arch "*)                            printf 'arch'    ;;
+		*" rhel "* | *" fedora "* | *" centos "*) printf 'rocky'   ;;
+		*)                                     printf 'unknown' ;;
+	esac
+}
+
+_os="$(detect_os)"
+
+declare -A _install_cmd=(
+	[arch]="sudo pacman -S --needed"
+	[rocky]="sudo dnf install"
 )
 
+_commands=(
+	git zsh nvim tree
+	tree-sitter gcc make curl unzip rg fd npm
+	sway swaybg swaylock waybar fuzzel mako cliphist wl-copy wl-clip-persist
+	grim slurp grimshot Xwayland pkexec
+	i3 i3status i3lock picom feh rofi
+	alacritty dex wpctl brightnessctl pavucontrol lf nm-applet firefox
+	pipewire pw-cat amixer volumeicon
+	keepassxc nextcloud libreoffice mqtt-explorer
+	ipython pre-commit gopls virtualenvwrapper.sh
+)
+
+# On Rocky most of the desktop packages live in EPEL, not the base repos.
+declare -A _packages=(
+	[arch:git]=git                         [rocky:git]=git
+	[arch:zsh]=zsh                         [rocky:zsh]=zsh
+	[arch:nvim]=neovim                     [rocky:nvim]=neovim
+
+	[arch:tree-sitter]=tree-sitter-cli     [rocky:tree-sitter]=-
+	[arch:gcc]=gcc                         [rocky:gcc]=gcc
+	[arch:make]=make                       [rocky:make]=make
+	[arch:curl]=curl                       [rocky:curl]=curl
+	[arch:unzip]=unzip                     [rocky:unzip]=unzip
+	[arch:rg]=ripgrep                      [rocky:rg]=ripgrep
+	[arch:fd]=fd                           [rocky:fd]=fd-find
+
+	[arch:sway]=sway                       [rocky:sway]=sway
+	[arch:swaylock]=swaylock               [rocky:swaylock]=swaylock
+	[arch:waybar]=waybar                   [rocky:waybar]=waybar
+	[arch:fuzzel]=fuzzel                   [rocky:fuzzel]=-
+	[arch:mako]=mako                       [rocky:mako]=mako
+	[arch:cliphist]=cliphist               [rocky:cliphist]=-
+	[arch:wl-copy]=wl-clipboard            [rocky:wl-copy]=wl-clipboard
+	[arch:wl-clip-persist]=wl-clip-persist [rocky:wl-clip-persist]=-
+	[arch:grim]=grim                       [rocky:grim]=grim
+	[arch:slurp]=slurp                     [rocky:slurp]=slurp
+	[arch:grimshot]=grimshot               [rocky:grimshot]=-
+
+	[arch:i3]=i3-wm                        [rocky:i3]=i3
+	[arch:i3status]=i3status               [rocky:i3status]=i3status
+	[arch:i3lock]=i3lock                   [rocky:i3lock]=i3lock
+	[arch:picom]=picom                     [rocky:picom]=picom
+	[arch:feh]=feh                         [rocky:feh]=feh
+
+	[arch:alacritty]=alacritty             [rocky:alacritty]=alacritty
+	[arch:dex]=dex                         [rocky:dex]=-
+	[arch:wpctl]=wireplumber               [rocky:wpctl]=wireplumber
+	[arch:brightnessctl]=brightnessctl     [rocky:brightnessctl]=brightnessctl
+	[arch:pavucontrol]=pavucontrol         [rocky:pavucontrol]=pavucontrol
+	[arch:lf]=lf                           [rocky:lf]=-
+	[arch:nm-applet]=network-manager-applet [rocky:nm-applet]=network-manager-applet
+	[arch:firefox]=firefox                 [rocky:firefox]=firefox
+
+	[arch:tree]=tree                       [rocky:tree]=tree
+	[arch:npm]=npm                         [rocky:npm]=npm
+	[arch:swaybg]=swaybg                   [rocky:swaybg]=swaybg
+	[arch:rofi]=rofi                       [rocky:rofi]=rofi
+	[arch:pkexec]=polkit                   [rocky:pkexec]=polkit
+	[arch:Xwayland]=xorg-xwayland          [rocky:Xwayland]=xorg-x11-server-Xwayland
+	[arch:pipewire]=pipewire               [rocky:pipewire]=pipewire
+	[arch:pw-cat]=pipewire-audio           [rocky:pw-cat]=pipewire-utils
+	[arch:amixer]=alsa-utils               [rocky:amixer]=alsa-utils
+	[arch:volumeicon]=volumeicon           [rocky:volumeicon]=-
+	[arch:keepassxc]=keepassxc             [rocky:keepassxc]=keepassxc
+	[arch:nextcloud]=nextcloud-client      [rocky:nextcloud]=nextcloud-client
+	[arch:libreoffice]=libreoffice-fresh   [rocky:libreoffice]=libreoffice
+	[arch:mqtt-explorer]=mqtt-explorer     [rocky:mqtt-explorer]=-
+	[arch:ipython]=ipython                 [rocky:ipython]=python3-ipython
+	[arch:pre-commit]=pre-commit           [rocky:pre-commit]=pre-commit
+	[arch:gopls]=gopls                     [rocky:gopls]=-
+	[arch:virtualenvwrapper.sh]=python-virtualenvwrapper [rocky:virtualenvwrapper.sh]=-
+)
+
+# These install no command, so they are checked by package name instead.
+_extras=( hack-nf-mono-git noto-fonts-emoji pipewire-alsa esp-idf )
+
+declare -A _extra_packages=(
+	[arch:hack-nf-mono-git]=hack-nf-mono-git [rocky:hack-nf-mono-git]=-
+	[arch:noto-fonts-emoji]=noto-fonts-emoji [rocky:noto-fonts-emoji]=google-noto-emoji-fonts
+	[arch:pipewire-alsa]=pipewire-alsa       [rocky:pipewire-alsa]=pipewire-alsa
+	[arch:esp-idf]=esp-idf                   [rocky:esp-idf]=-
+)
+
+pkg_installed() {
+	case "${_os}" in
+		arch)  pacman -Qq "$1" &> /dev/null ;;
+		rocky) rpm -q "$1"     &> /dev/null ;;
+		*)     return 1 ;;
+	esac
+}
+
 _missing_pkgs=""
-for _cmd in $(printf '%s\n' "${!_deps[@]}" | sort)
+_unpackaged=""
+_any_missing=""
+
+for _cmd in "${_commands[@]}"
 do
-	if ! command -v "${_cmd}" &> /dev/null
+	command -v "${_cmd}" &> /dev/null && continue
+	_any_missing=1
+
+	_pkg="${_packages[${_os}:${_cmd}]}"
+
+	if [ "${_os}" = "unknown" ] || [ -z "${_pkg}" ]
 	then
-		printf "  ✗ %-14s (package: %s)\n" "${_cmd}" "${_deps[$_cmd]}"
-		_missing_pkgs="${_missing_pkgs} ${_deps[$_cmd]}"
+		printf "  ✗ %-16s (unknown package)\n" "${_cmd}"
+	elif [ "${_pkg}" = "-" ]
+	then
+		printf "  ✗ %-16s (no %s package)\n" "${_cmd}" "${_os}"
+		_unpackaged="${_unpackaged} ${_cmd}"
+	else
+		printf "  ✗ %-16s (package: %s)\n" "${_cmd}" "${_pkg}"
+		case " ${_missing_pkgs} " in
+			*" ${_pkg} "*) ;;
+			*) _missing_pkgs="${_missing_pkgs} ${_pkg}" ;;
+		esac
 	fi
 done
+
+for _extra in "${_extras[@]}"
+do
+	_pkg="${_extra_packages[${_os}:${_extra}]}"
+
+	if [ "${_os}" = "unknown" ] || [ -z "${_pkg}" ]
+	then
+		printf "  ✗ %-16s (unknown package)\n" "${_extra}"
+		_any_missing=1
+	elif [ "${_pkg}" = "-" ]
+	then
+		printf "  ✗ %-16s (no %s package)\n" "${_extra}" "${_os}"
+		_unpackaged="${_unpackaged} ${_extra}"
+		_any_missing=1
+	elif ! pkg_installed "${_pkg}"
+	then
+		printf "  ✗ %-16s (package: %s)\n" "${_extra}" "${_pkg}"
+		_any_missing=1
+		case " ${_missing_pkgs} " in
+			*" ${_pkg} "*) ;;
+			*) _missing_pkgs="${_missing_pkgs} ${_pkg}" ;;
+		esac
+	fi
+done
+
+if [ -z "${_any_missing}" ]
+then
+	printf "  ✓ all expected commands are available\n"
+fi
 
 if [ -n "${_missing_pkgs}" ]
 then
 	printf "  install the missing commands with:\n"
-	printf "    sudo pacman -S%s\n" "${_missing_pkgs}"
-else
-	printf "  ✓ all expected commands are available\n"
+	printf "    %s%s\n" "${_install_cmd[${_os}]}" "${_missing_pkgs}"
+fi
+
+if [ -n "${_unpackaged}" ]
+then
+	printf "  no %s package for:%s\n" "${_os}" "${_unpackaged}"
 fi
 
 # --- Configs -------------------------------------------------------------
