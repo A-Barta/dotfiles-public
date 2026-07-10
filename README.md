@@ -3,10 +3,14 @@
 > ⚙️ Configuration files to carry the same environment wherever I go.
 > 🐧 I use Arch, btw.
 
-## ⚠️ By design, there are no backups
+## ⚠️ The repo is the live config
 
-`install.sh` overwrites live config files in `$HOME` with no backup.
-**The repo is the source of truth — edit files here and push. Never edit them locally.**
+`install.sh` symlinks `$HOME` at this repo rather than copying into it, so a
+file opened from `~/.config/` *is* the file in this checkout.
+**Edit here and push. Moving or deleting this repo breaks every deployed config.**
+
+Nothing is overwritten: if a destination already exists and is not a symlink,
+`install.sh` reports it and skips, leaving you to remove it.
 
 ## 🧰 The setup
 
@@ -30,14 +34,26 @@ cd dotfiles-public
 
 `install.sh`:
 
-1. Reports any missing runtime dependencies (with the `pacman` command to fix them).
-2. Copies each config into `$HOME` — `zshrc` → `~/.zshrc`, `config/<tool>/` → `~/.config/<tool>/`.
+1. Reports any missing runtime dependencies, with the `pacman` or `dnf` command
+   to fix them. Arch and Rocky (RHEL) are recognised; derivatives resolve to
+   their parent via `ID_LIKE`.
+2. Symlinks each config into `$HOME`.
 3. Optionally updates the git commit author in `~/.gitconfig`.
 
 ## 🗂️ Layout
 
 ```
-zshrc            → ~/.zshrc
-gitconfig        → ~/.gitconfig   (name/email filled in at install time)
-config/<tool>/   → ~/.config/<tool>/
+zshrc                → ~/.zshrc
+config/<tool>/       → ~/.config/<tool>/
+gitconfig            → ~/.gitconfig   (copied, not linked: name/email
+                                       are filled in at install time)
+```
+
+`~/.config/zsh` and `~/.config/sway` also hold files this repo does not carry
+(`aliasrc_private`, `aliasrc_maxiv`, `outputs.d/`), so only the file this repo
+owns is linked, not the whole directory:
+
+```
+config/zsh/aliasrc   → ~/.config/zsh/aliasrc
+config/sway/config   → ~/.config/sway/config
 ```

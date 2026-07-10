@@ -7,6 +7,31 @@ The setup uses Folke's lazy.nvim as package manager, and William Boman's mason.n
 When typing `<leader>`, which-key pops up a menu of the bindings available from
 there, so the lists below are also discoverable in-editor.
 
+## Plugin versions
+
+`lazy-lock.json` is committed and is the only place plugin versions are pinned.
+Plugin specs carry `branch` (what the plugin supports) but never `tag` or
+`commit`, so the two can never disagree.
+
+- `:Lazy update` moves plugins forward and rewrites the lockfile. Because
+  `~/.config/nvim` is a symlink into the repo, the change shows up in
+  `git status` — review and commit it.
+- `:Lazy restore` pins plugins back to the committed lockfile. Run this on a
+  new machine to reproduce an existing one.
+
+Changing a spec's `branch` does not move an already-installed plugin: the
+lockfile still names the old commit. Follow the edit with `:Lazy update <plugin>`.
+
+## Treesitter
+
+nvim-treesitter tracks its `main` branch, which no longer bundles parsers or
+drives highlighting. Parsers are compiled on demand into
+`~/.local/share/nvim/site/parser/`, so the **`tree-sitter` CLI must be
+installed** (`tree-sitter-cli` on Arch; not packaged on Rocky — use
+`cargo install tree-sitter-cli`). Without it, parsers silently fail to build
+and highlighting falls back to whatever stale parser is on the runtimepath.
+`:checkhealth nvim-treesitter` reports whether the CLI was found.
+
 ## Keybindings
 
 ### Global
