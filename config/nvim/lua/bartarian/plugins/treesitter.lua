@@ -1,12 +1,3 @@
---[[
-nvim-treesitter `main` branch.
-
-The old `master` branch is archived and its bundled parsers crash on
-neovim 0.11+ (parser ABI mismatch). The `main` branch has a different model:
-it no longer drives highlighting itself. Instead we install the parsers and
-turn on neovim's built-in treesitter highlighting per filetype.
---]]
-
 -- Parsers to install, paired with the filetypes that should get treesitter
 -- highlighting. Note `vimdoc` is the parser for the `help` filetype.
 local parsers = { "c", "lua", "vim", "vimdoc", "query", "python" }
