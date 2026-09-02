@@ -51,6 +51,7 @@ tooltip {
 
 /* Right-side module pills */
 #pulseaudio,
+#custom-vpn,
 #network,
 #cpu,
 #memory,
@@ -67,6 +68,7 @@ tooltip {
 #cpu        { color: #98bb6c; }
 #memory     { color: #7aa89f; }
 #network    { color: #7e9cd8; }
+#custom-vpn { color: #957fb8; }
 #pulseaudio { color: #e6c384; }
 #battery    { color: #98bb6c; }
 

@@ -8,7 +8,7 @@
 
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["pulseaudio", "network", "cpu", "memory", "battery", "tray", "clock"],
+    "modules-right": ["pulseaudio", "custom/vpn", "network", "cpu", "memory", "battery", "tray", "clock"],
 
     "sway/workspaces": {
         "disable-scroll": true,
@@ -45,6 +45,17 @@
         "format-ethernet": "  {ipaddr}",
         "format-disconnected": "  offline",
         "tooltip-format": "{ifname} via {gwaddr}"
+    },
+    // No built-in VPN module exists; vpn.sh reports Pritunl and WireGuard.
+    // Its icon lives in the script, not in "format": a literal glyph here
+    // would keep rendering a bare shield with no VPN up.
+    // Empty text hides the module entirely.
+    "custom/vpn": {
+        "exec": "~/.config/waybar/scripts/vpn.sh",
+        "return-type": "json",
+        "interval": 5,
+        "format": "{}",
+        "tooltip": true
     },
     "pulseaudio": {
         "format": "{icon}  {volume}%",

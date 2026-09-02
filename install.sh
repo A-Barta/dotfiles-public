@@ -64,14 +64,14 @@ declare -A _install_cmd=(
 )
 
 _commands=(
-	git zsh nvim tree
+	git zsh nvim tree jq
 	tree-sitter gcc make curl unzip rg fd npm
 	sway swaybg swaylock waybar fuzzel mako cliphist wl-copy wl-clip-persist
 	grim slurp xdg-user-dir Xwayland pkexec
 	i3 i3status i3lock picom feh rofi
 	alacritty dex wpctl brightnessctl pavucontrol lf nm-applet firefox
 	pipewire pw-cat amixer volumeicon
-	keepassxc nextcloud libreoffice mqtt-explorer
+	keepassxc nextcloud libreoffice mqtt-explorer pritunl-client
 	ipython pre-commit gopls virtualenvwrapper.sh
 )
 
@@ -80,6 +80,7 @@ declare -A _packages=(
 	[arch:git]=git                         [rocky:git]=git
 	[arch:zsh]=zsh                         [rocky:zsh]=zsh
 	[arch:nvim]=neovim                     [rocky:nvim]=neovim
+	[arch:jq]=jq                           [rocky:jq]=jq
 
 	[arch:tree-sitter]=tree-sitter-cli     [rocky:tree-sitter]=-
 	[arch:gcc]=gcc                         [rocky:gcc]=gcc
@@ -130,6 +131,7 @@ declare -A _packages=(
 	[arch:nextcloud]=nextcloud-client      [rocky:nextcloud]=nextcloud-client
 	[arch:libreoffice]=libreoffice-fresh   [rocky:libreoffice]=libreoffice
 	[arch:mqtt-explorer]=mqtt-explorer     [rocky:mqtt-explorer]=-
+	[arch:pritunl-client]=pritunl-client-bin [rocky:pritunl-client]=-
 	[arch:ipython]=ipython                 [rocky:ipython]=python3-ipython
 	[arch:pre-commit]=pre-commit           [rocky:pre-commit]=pre-commit
 	[arch:gopls]=gopls                     [rocky:gopls]=-
