@@ -67,7 +67,7 @@ _commands=(
 	git zsh nvim tree
 	tree-sitter gcc make curl unzip rg fd npm
 	sway swaybg swaylock waybar fuzzel mako cliphist wl-copy wl-clip-persist
-	grim slurp grimshot Xwayland pkexec
+	grim slurp xdg-user-dir Xwayland pkexec
 	i3 i3status i3lock picom feh rofi
 	alacritty dex wpctl brightnessctl pavucontrol lf nm-applet firefox
 	pipewire pw-cat amixer volumeicon
@@ -99,7 +99,7 @@ declare -A _packages=(
 	[arch:wl-clip-persist]=wl-clip-persist [rocky:wl-clip-persist]=-
 	[arch:grim]=grim                       [rocky:grim]=grim
 	[arch:slurp]=slurp                     [rocky:slurp]=slurp
-	[arch:grimshot]=grimshot               [rocky:grimshot]=-
+	[arch:xdg-user-dir]=xdg-user-dirs      [rocky:xdg-user-dir]=xdg-user-dirs
 
 	[arch:i3]=i3-wm                        [rocky:i3]=i3
 	[arch:i3status]=i3status               [rocky:i3status]=i3status

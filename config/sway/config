@@ -65,8 +65,8 @@ bindsym XF86AudioMicMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SOUR
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
-# Grimshot is used for screenshots
-bindsym Print exec grimshot save area
+# grim and slurp directly rather than grimshot for screenshots
+bindsym Print exec area=$(slurp) && grim -g "$area" "$(xdg-user-dir PICTURES)/screenshot-$(date +%Y%m%d-%H%M%S).png"
 
 #open a browser
 bindsym $mod+apostrophe exec firefox
