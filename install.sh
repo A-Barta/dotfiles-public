@@ -237,6 +237,7 @@ install_config i3status  config/i3status  "${HOME}/.config/i3status"
 install_config waybar    config/waybar    "${HOME}/.config/waybar"
 install_config fuzzel    config/fuzzel    "${HOME}/.config/fuzzel"
 install_config mako      config/mako      "${HOME}/.config/mako"
+install_config swaylock  config/swaylock  "${HOME}/.config/swaylock"
 install_config alacritty config/alacritty "${HOME}/.config/alacritty"
 install_config nvim      config/nvim      "${HOME}/.config/nvim"
 

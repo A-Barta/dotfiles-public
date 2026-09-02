@@ -1,0 +1,43 @@
+# swaylock — screen locker styling, Kanagawa Wave to match alacritty and nvim.
+# Keys are the long command-line options without the leading "--".
+
+color=1f1f28
+font=Hack Nerd Font Mono
+font-size=24
+
+indicator-radius=100
+indicator-thickness=8
+indicator-caps-lock
+
+# The ring carries the state; the inside stays the background color throughout.
+inside-color=1f1f28
+inside-clear-color=1f1f28
+inside-caps-lock-color=1f1f28
+inside-ver-color=1f1f28
+inside-wrong-color=1f1f28
+
+ring-color=7e9cd8
+ring-clear-color=e6c384
+ring-caps-lock-color=ffa066
+ring-ver-color=7aa89f
+ring-wrong-color=e82424
+
+key-hl-color=98bb6c
+bs-hl-color=ffa066
+caps-lock-key-hl-color=ffa066
+caps-lock-bs-hl-color=ffa066
+
+# Transparent separators leave the highlight segments as one unbroken ring.
+separator-color=00000000
+line-uses-inside
+
+text-color=dcd7ba
+text-clear-color=e6c384
+text-caps-lock-color=ffa066
+text-ver-color=7aa89f
+text-wrong-color=e82424
+
+show-failed-attempts
+
+# An empty password is a stray keypress, not a failed attempt.
+ignore-empty-password

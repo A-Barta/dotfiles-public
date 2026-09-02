@@ -209,7 +209,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-bindsym $mod+Shift+p exec swaylock -c 1a1a1a
+bindsym $mod+Shift+p exec swaylock
 
 bindsym $mod+Shift+Delete exec "systemctl poweroff"
 
