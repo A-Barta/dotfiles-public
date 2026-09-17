@@ -1,0 +1,29 @@
+#!/bin/sh
+# Toggle the built-in laptop panel, for the ThinkPad double-screen key.
+#
+# The panel is only switched off while another output is active, so the key can
+# never leave the session with nothing to draw on. Switching it back on is
+# always allowed.
+set -eu
+
+internal=eDP-1
+
+outputs=$(swaymsg -t get_outputs)
+active_external=$(printf '%s' "$outputs" | jq --arg i "$internal" \
+	'[.[] | select(.name != $i and .active)] | length')
+internal_active=$(printf '%s' "$outputs" | jq -r --arg i "$internal" \
+	'.[] | select(.name == $i) | .active')
+
+if [ "$internal_active" = "true" ]
+then
+	if [ "$active_external" -eq 0 ]
+	then
+		notify-send "Display" "No external display active, keeping $internal on"
+		exit 0
+	fi
+	swaymsg output "$internal" disable
+	notify-send "Display" "$internal off"
+else
+	swaymsg output "$internal" enable
+	notify-send "Display" "$internal on"
+fi

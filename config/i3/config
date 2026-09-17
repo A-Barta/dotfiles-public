@@ -57,6 +57,11 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
+# ThinkPad hardware keys. The keyboard and scissors keys report keycodes 374
+# and 634, past the 255 the X11 protocol carries, so only these two bind here.
+bindsym XF86Favorites exec brave
+bindsym XF86Tools exec alacritty
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 

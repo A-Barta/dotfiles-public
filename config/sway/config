@@ -66,7 +66,23 @@ bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
 # grim and slurp directly rather than grimshot for screenshots
-bindsym Print exec area=$(slurp) && grim -g "$area" "$(xdg-user-dir PICTURES)/screenshot-$(date +%Y%m%d-%H%M%S).png"
+bindsym Print exec grim "$(xdg-user-dir PICTURES)/screenshot-$(date +%Y%m%d-%H%M%S).png"
+
+# ThinkPad hardware keys. XF86Keyboard (keycode 374) and
+# XF86SelectiveScreenshot (634) sit above the 255 the X11 protocol allows,
+# so they bind under xkbcommon but have no i3 equivalent.
+# The bluetooth key is claimed by the kernel rfkill handler before sway sees
+# it; a binding here would fire on top of the radio toggle.
+input type:keyboard {
+    xkb_layout "us,it,se"
+}
+bindsym XF86Keyboard input type:keyboard xkb_switch_layout next
+bindsym XF86Favorites exec brave
+bindsym XF86Tools exec alacritty
+bindsym XF86SelectiveScreenshot exec area=$(slurp) && grim -g "$area" "$(xdg-user-dir PICTURES)/screenshot-$(date +%Y%m%d-%H%M%S).png"
+
+# Refuses to switch the panel off while it is the only active output.
+bindsym XF86Display exec --no-startup-id ~/.config/sway/scripts/toggle-internal-display
 
 #open a browser
 bindsym $mod+apostrophe exec firefox

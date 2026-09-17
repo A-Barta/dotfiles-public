@@ -67,9 +67,9 @@ _commands=(
 	git zsh nvim tree jq
 	tree-sitter gcc make curl unzip rg fd npm
 	sway swaybg swaylock waybar fuzzel mako cliphist wl-copy wl-clip-persist
-	grim slurp xdg-user-dir Xwayland pkexec
+	grim slurp xdg-user-dir Xwayland pkexec notify-send
 	i3 i3status i3lock picom feh rofi
-	alacritty dex wpctl brightnessctl pavucontrol lf nm-applet firefox
+	alacritty dex wpctl brightnessctl pavucontrol lf nm-applet firefox brave
 	pipewire pw-cat amixer volumeicon
 	keepassxc nextcloud libreoffice mqtt-explorer pritunl-client
 	ipython pre-commit gopls virtualenvwrapper.sh
@@ -116,6 +116,8 @@ declare -A _packages=(
 	[arch:lf]=lf                           [rocky:lf]=-
 	[arch:nm-applet]=network-manager-applet [rocky:nm-applet]=network-manager-applet
 	[arch:firefox]=firefox                 [rocky:firefox]=firefox
+	[arch:brave]=brave-bin                 [rocky:brave]=-
+	[arch:notify-send]=libnotify           [rocky:notify-send]=libnotify
 
 	[arch:tree]=tree                       [rocky:tree]=tree
 	[arch:npm]=npm                         [rocky:npm]=npm
@@ -233,6 +235,7 @@ command -v zsh &> /dev/null && link_into_home "zshrc" "${HOME}/.zshrc"
 # so only the repo-owned file is linked, not the directory.
 install_config zsh       config/zsh/aliasrc "${HOME}/.config/zsh/aliasrc"
 install_config sway      config/sway/config "${HOME}/.config/sway/config"
+install_config sway      config/sway/scripts "${HOME}/.config/sway/scripts"
 
 install_config i3        config/i3        "${HOME}/.config/i3"
 install_config i3status  config/i3status  "${HOME}/.config/i3status"
