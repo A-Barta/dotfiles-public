@@ -143,13 +143,14 @@ declare -A _packages=(
 )
 
 # These install no command, so they are checked by package name instead.
-_extras=( hack-nf-mono-git noto-fonts-emoji pipewire-alsa esp-idf )
+_extras=( hack-nf-mono-git noto-fonts-emoji pipewire-alsa esp-idf zsh-syntax-highlighting )
 
 declare -A _extra_packages=(
 	[arch:hack-nf-mono-git]=hack-nf-mono-git [rocky:hack-nf-mono-git]=-
 	[arch:noto-fonts-emoji]=noto-fonts-emoji [rocky:noto-fonts-emoji]=google-noto-emoji-fonts
 	[arch:pipewire-alsa]=pipewire-alsa       [rocky:pipewire-alsa]=pipewire-alsa
 	[arch:esp-idf]=esp-idf                   [rocky:esp-idf]=-
+	[arch:zsh-syntax-highlighting]=zsh-syntax-highlighting [rocky:zsh-syntax-highlighting]=zsh-syntax-highlighting
 )
 
 pkg_installed() {
