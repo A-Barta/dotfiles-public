@@ -66,7 +66,7 @@ declare -A _install_cmd=(
 _commands=(
 	git zsh nvim tree jq
 	tree-sitter gcc make curl unzip rg fd npm
-	sway swaybg swaylock swayidle waybar fuzzel mako cliphist wl-copy wl-clip-persist
+	sway swaybg swaylock waybar fuzzel mako cliphist wl-copy wl-clip-persist
 	grim slurp xdg-user-dir Xwayland pkexec notify-send
 	i3 i3status i3lock picom feh rofi
 	alacritty dex wpctl playerctl brightnessctl pavucontrol lf nm-applet firefox brave
@@ -92,7 +92,6 @@ declare -A _packages=(
 
 	[arch:sway]=sway                       [rocky:sway]=sway
 	[arch:swaylock]=swaylock               [rocky:swaylock]=swaylock
-	[arch:swayidle]=swayidle               [rocky:swayidle]=swayidle
 	[arch:waybar]=waybar                   [rocky:waybar]=waybar
 	[arch:fuzzel]=fuzzel                   [rocky:fuzzel]=-
 	[arch:mako]=mako                       [rocky:mako]=mako

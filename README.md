@@ -14,13 +14,13 @@ Nothing is overwritten: if a destination already exists and is not a symlink,
 
 ## 🧰 The setup
 
-| Area            | Tools                                                           |
-| --------------- | --------------------------------------------------------------- |
-| Terminal        | `alacritty`, `zsh`                                              |
-| Editor          | `neovim`                                                        |
-| X11 desktop     | `i3` + `i3status`                                               |
-| Wayland desktop | `sway` + `waybar` + `fuzzel` + `mako` + `swaylock` + `swayidle` |
-| VCS             | `git`                                                           |
+| Area            | Tools                                                |
+| --------------- | ---------------------------------------------------- |
+| Terminal        | `alacritty`, `zsh`                                   |
+| Editor          | `neovim`                                             |
+| X11 desktop     | `i3` + `i3status`                                    |
+| Wayland desktop | `sway` + `waybar` + `fuzzel` + `mako` + `swaylock`   |
+| VCS             | `git`                                                |
 
 Each tool's config is installed only if that tool is found on the system.
 

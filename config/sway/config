@@ -3,7 +3,6 @@
 set $mod Mod4
 
 set $term alacritty
-set $lock swaylock -f
 set $screenshot_dir $(xdg-user-dir PICTURES)
 
 # --- Session ---------------------------------------------------------------
@@ -29,20 +28,6 @@ exec wl-paste --type image --watch cliphist store
 # Keep clipboard contents alive after the source window closes — Wayland drops
 # them otherwise.
 exec wl-clip-persist --clipboard regular
-
-# Lock after 10 minutes idle, blank the screens 5 minutes later, and lock
-# before suspend or hibernation so the machine never resumes unlocked.
-# `loginctl lock-session` ($mod+Shift+p) goes through the same lock event.
-exec swayidle -w \
-    timeout 600 '$lock' \
-    timeout 900 'swaymsg "output * power off"' \
-        resume 'swaymsg "output * power on"' \
-    before-sleep '$lock' \
-    lock '$lock'
-
-# Fullscreen video should not trigger the idle lock.
-for_window [app_id=".*"] inhibit_idle fullscreen
-for_window [class=".*"] inhibit_idle fullscreen
 
 # --- Appearance ------------------------------------------------------------
 
@@ -268,12 +253,11 @@ bindsym $mod+r mode "resize"
 # Reload the configuration file. sway has no in-place restart like i3's.
 bindsym $mod+Shift+c reload
 
-# Goes through swayidle's lock event, so it is the same locker as on idle.
-bindsym $mod+Shift+p exec loginctl lock-session
+bindsym $mod+Shift+p exec swaylock
 
 # Exit and power-off ask first; a stray chord should not end the session.
 bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway? This ends your Wayland session.' -B 'Exit sway' 'swaymsg exit'
-bindsym $mod+Shift+Delete exec swaynag -t warning -m 'Power off?' -B 'Power off' 'systemctl poweroff'
+bindsym $mod+Shift+Delete exec 'systemctl poweroff'
 
 # --- Bar -------------------------------------------------------------------
 
